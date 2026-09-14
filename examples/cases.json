@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "id": "CASE-100",
+      "engineering_status": "open",
+      "customer_status": "hold",
+      "technical_owner": "runtime-oncall",
+      "customer_owner": "support-engineer",
+      "opened_at": "2026-09-01T09:00:00Z",
+      "last_human_update": "2026-09-12T14:00:00Z",
+      "closed_outcome": null
+    },
+    {
+      "id": "CASE-101",
+      "engineering_status": "open",
+      "customer_status": "closed",
+      "technical_owner": "",
+      "customer_owner": "support-engineer",
+      "opened_at": "2026-09-01T09:00:00Z",
+      "last_human_update": "2026-09-01T09:00:00Z",
+      "closed_outcome": null
+    },
+    {
+      "id": "CASE-102",
+      "engineering_status": "closed",
+      "customer_status": "open",
+      "technical_owner": "platform-team",
+      "customer_owner": "support-engineer",
+      "opened_at": "2026-08-20T09:00:00Z",
+      "last_human_update": "2026-09-10T14:00:00Z",
+      "closed_outcome": "unconfirmed"
+    }
+  ]
+}
