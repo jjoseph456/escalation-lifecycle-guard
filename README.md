@@ -22,6 +22,7 @@ customer information, ticket data, or internal operational documentation.
 | --- | --- | --- |
 | `OPEN_ENGINEERING_NO_CUSTOMER_PATH` | High | Engineering work remains open after the customer case is closed. |
 | `MISSING_TECHNICAL_OWNER` | High | No one is accountable for the next technical action. |
+| `OVERDUE_COVERAGE_UPDATE` | High | An OOO handoff has passed its promised customer-update date. |
 | `STALE_HUMAN_UPDATE` | Medium | An active escalation has exceeded its update cadence. |
 | `CLOSED_ENGINEERING_ACTIVE_CUSTOMER` | Medium | Engineering closed while the customer case is still active. |
 | `UNCLEAR_CLOSE_OUTCOME` | Medium | Closure does not identify recovery, accepted workaround, informed limitation, or an explicitly unconfirmed result. |
@@ -85,6 +86,29 @@ Allowed status values are `open` and `closed` for engineering, and `open`,
 `pending`, `hold`, and `closed` for a customer case. Allowed close outcomes
 are `customer_verified`, `shipped_monitoring`, `workaround_accepted`,
 `no_product_change`, and `unconfirmed`.
+
+## OOO Coverage
+
+When an escalation is handed to a coverage owner, add `handoff_at`,
+`coverage_owner`, and `next_customer_update`. The guard requires all three
+handoff fields together and raises a high-severity finding when the promised
+customer update is overdue.
+
+```json
+{
+  "id": "CASE-103",
+  "engineering_status": "open",
+  "customer_status": "hold",
+  "technical_owner": "platform-oncall",
+  "customer_owner": "support-engineer",
+  "handoff_at": "2026-09-12T17:00:00Z",
+  "coverage_owner": "coverage-engineer",
+  "next_customer_update": "2026-09-15T17:00:00Z",
+  "opened_at": "2026-09-01T09:00:00Z",
+  "last_human_update": "2026-09-12T17:00:00Z",
+  "closed_outcome": null
+}
+```
 
 ## Example Output
 

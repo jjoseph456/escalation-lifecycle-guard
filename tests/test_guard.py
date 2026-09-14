@@ -69,5 +69,31 @@ class LifecycleGuardTests(unittest.TestCase):
                 now=NOW,
             )
 
+    def test_handoff_requires_a_coverage_owner(self):
+        with self.assertRaisesRegex(ValueError, "coverage_owner is required"):
+            validate_cases(
+                [
+                    case(
+                        handoff_at="2026-09-12T09:00:00Z",
+                        next_customer_update="2026-09-15T09:00:00Z",
+                    )
+                ],
+                now=NOW,
+            )
+
+    def test_overdue_handoff_update_is_high_risk(self):
+        findings = validate_cases(
+            [
+                case(
+                    handoff_at="2026-09-01T09:00:00Z",
+                    coverage_owner="coverage",
+                    next_customer_update="2026-09-13T09:00:00Z",
+                )
+            ],
+            now=NOW,
+        )
+        self.assertEqual(["OVERDUE_COVERAGE_UPDATE"], [finding.rule for finding in findings])
+        self.assertEqual("high", findings[0].severity)
+
     def test_cli_returns_two_for_high_findings(self):
         self.assertEqual(2, main(["examples/cases.json"]))

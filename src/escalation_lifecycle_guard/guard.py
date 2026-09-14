@@ -75,6 +75,19 @@ def validate_case_shape(case: Any) -> dict[str, Any]:
     parse_timestamp(case.get("opened_at"), "opened_at", case_id)
     parse_timestamp(case.get("last_human_update"), "last_human_update", case_id)
 
+    handoff_at = case.get("handoff_at")
+    next_customer_update = case.get("next_customer_update")
+    if handoff_at is not None:
+        parse_timestamp(handoff_at, "handoff_at", case_id)
+        require_string(case, "coverage_owner", case_id)
+        parse_timestamp(
+            next_customer_update, "next_customer_update", case_id
+        )
+    elif next_customer_update is not None:
+        raise ValueError(
+            f"{case_id}: next_customer_update requires handoff_at."
+        )
+
     closed_outcome = case.get("closed_outcome")
     if closed_outcome is not None and closed_outcome not in CLOSE_OUTCOMES:
         raise ValueError(
@@ -107,6 +120,7 @@ def validate_cases(
         )
         technical_owner = str(case.get("technical_owner") or "").strip()
         customer_owner = str(case.get("customer_owner") or "").strip()
+        handoff_at = case.get("handoff_at")
         closed_outcome = case.get("closed_outcome")
 
         if engineering_status == "open" and customer_status == "closed":
@@ -138,6 +152,20 @@ def validate_cases(
                     "An open escalation has no customer-impact owner.",
                 )
             )
+
+        if handoff_at is not None:
+            next_customer_update = parse_timestamp(
+                case["next_customer_update"], "next_customer_update", case_id
+            )
+            if next_customer_update < current_time:
+                findings.append(
+                    Finding(
+                        case_id,
+                        "high",
+                        "OVERDUE_COVERAGE_UPDATE",
+                        "The handoff coverage update is overdue.",
+                    )
+                )
 
         if engineering_status == "open":
             update_age = current_time - last_update
