@@ -16,6 +16,8 @@ actually describe an outcome?
 All examples are synthetic. This project contains no employer source code,
 customer information, ticket data, or internal operational documentation.
 
+![Terminal preview of escalation lifecycle findings](assets/terminal-preview.svg)
+
 ## What It Checks
 
 | Rule | Severity | Why it matters |
