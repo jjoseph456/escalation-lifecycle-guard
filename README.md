@@ -28,6 +28,10 @@ customer information, ticket data, or internal operational documentation.
 | `STALE_HUMAN_UPDATE` | Medium | An active escalation has exceeded its update cadence. |
 | `CLOSED_ENGINEERING_ACTIVE_CUSTOMER` | Medium | Engineering closed while the customer case is still active. |
 | `UNCLEAR_CLOSE_OUTCOME` | Medium | Closure does not identify recovery, accepted workaround, informed limitation, or an explicitly unconfirmed result. |
+| `MISSED_ENGINEERING_RESPONSE` | High (Sev1/Sev2), Medium (Sev3) | No engineering response within 1 business day for Sev1/Sev2 or 5 business days for Sev3. |
+| `SILENCE_COUNTED_AS_RECOVERY` | High | An inactivity auto-close is recorded as a verified recovery or accepted workaround. Silence proves only that no reply arrived. |
+| `REOPEN_WITHOUT_REDISPOSITION` | High | A reopened escalation has no new technical disposition after one business day. |
+| `CLOSED_WITHOUT_ASSIGNMENT` | Medium | The escalation closed without ever having an assigned engineer. |
 
 ## Quick Start
 
@@ -88,6 +92,25 @@ Allowed status values are `open` and `closed` for engineering, and `open`,
 `pending`, `hold`, and `closed` for a customer case. Allowed close outcomes
 are `customer_verified`, `shipped_monitoring`, `workaround_accepted`,
 `no_product_change`, and `unconfirmed`.
+
+## Outcome Controls
+
+These optional fields enable the response, closure, and reopen checks:
+
+| Field | Values | Used by |
+| --- | --- | --- |
+| `severity` | `sev1`, `sev2`, `sev3`, or null | `MISSED_ENGINEERING_RESPONSE` |
+| `first_engineering_response` | ISO 8601 timestamp or null | `MISSED_ENGINEERING_RESPONSE` |
+| `closure_trigger` | `customer_confirmed`, `engineering_decision`, `inactivity_auto_close`, or null | `SILENCE_COUNTED_AS_RECOVERY` |
+| `assigned_before_close` | `true`, `false`, or null | `CLOSED_WITHOUT_ASSIGNMENT` |
+| `reopened_at`, `last_disposition_at` | ISO 8601 timestamps or null | `REOPEN_WITHOUT_REDISPOSITION` |
+
+Business days count Monday through Friday in UTC. Holidays are not modeled.
+
+The design principle is that an engineering close, an automation close, and
+a customer outcome are separate facts. A case closed for inactivity is valid
+queue hygiene, but its outcome is `unconfirmed` unless the customer or
+telemetry verified recovery.
 
 ## OOO Coverage
 
