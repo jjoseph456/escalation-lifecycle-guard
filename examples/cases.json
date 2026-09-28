@@ -42,6 +42,42 @@
       "opened_at": "2026-09-01T09:00:00Z",
       "last_human_update": "2026-09-12T17:00:00Z",
       "closed_outcome": null
+    },
+    {
+      "id": "CASE-104",
+      "engineering_status": "open",
+      "customer_status": "open",
+      "technical_owner": "",
+      "customer_owner": "support-engineer",
+      "severity": "sev2",
+      "first_engineering_response": null,
+      "opened_at": "2026-09-09T09:00:00Z",
+      "last_human_update": "2026-09-11T09:00:00Z",
+      "closed_outcome": null
+    },
+    {
+      "id": "CASE-105",
+      "engineering_status": "closed",
+      "customer_status": "closed",
+      "technical_owner": "",
+      "customer_owner": "support-engineer",
+      "opened_at": "2026-08-10T09:00:00Z",
+      "last_human_update": "2026-08-20T09:00:00Z",
+      "closure_trigger": "inactivity_auto_close",
+      "assigned_before_close": false,
+      "closed_outcome": "customer_verified"
+    },
+    {
+      "id": "CASE-106",
+      "engineering_status": "open",
+      "customer_status": "open",
+      "technical_owner": "runtime-oncall",
+      "customer_owner": "support-engineer",
+      "opened_at": "2026-08-25T09:00:00Z",
+      "last_human_update": "2026-09-12T09:00:00Z",
+      "reopened_at": "2026-09-09T09:00:00Z",
+      "last_disposition_at": "2026-09-02T09:00:00Z",
+      "closed_outcome": null
     }
   ]
 }
